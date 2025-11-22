@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pickle
-from streamlit_option_menu import option_menu
 
 # Page configuration
 st.set_page_config(
