@@ -48,34 +48,143 @@ st.markdown("""
         background-color: #fadbd8;
         border-left: 5px solid #c0392b;
     }
+    .moderate-risk {
+        background-color: #fef5e7;
+        border-left: 5px solid #f39c12;
+    }
     .low-risk {
         background-color: #d5f4e6;
         border-left: 5px solid #27ae60;
     }
     .risk-meter {
         width: 100%;
-        height: 30px;
+        height: 40px;
         background-color: #ecf0f1;
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
-        margin: 15px 0;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .risk-fill-low {
         height: 100%;
         background: linear-gradient(90deg, #27ae60, #2ecc71);
-        border-radius: 15px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+    }
+    .risk-fill-moderate {
+        height: 100%;
+        background: linear-gradient(90deg, #f39c12, #e67e22);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
     }
     .risk-fill-high {
         height: 100%;
         background: linear-gradient(90deg, #e74c3c, #c0392b);
-        border-radius: 15px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
     }
-    .recommendation {
-        background-color: #e8f4f8;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 15px 0;
-        border-left: 4px solid #3498db;
+    .recommendations-container {
+        background-color: #f8f9fa;
+        padding: 25px;
+        border-radius: 15px;
+        margin: 25px 0;
+        border: 2px solid #3498db;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .recommendation-high {
+        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        padding: 16px;
+        margin: 12px 0;
+        border-radius: 10px;
+        border-left: 6px solid #c0392b;
+        box-shadow: 0 2px 8px rgba(192, 57, 43, 0.15);
+        font-size: 15px;
+        line-height: 1.6;
+        transition: all 0.3s ease;
+    }
+    .recommendation-high:hover {
+        box-shadow: 0 4px 12px rgba(192, 57, 43, 0.25);
+        transform: translateX(5px);
+    }
+    .recommendation-moderate {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        padding: 16px;
+        margin: 12px 0;
+        border-radius: 10px;
+        border-left: 6px solid #f39c12;
+        box-shadow: 0 2px 8px rgba(243, 156, 18, 0.15);
+        font-size: 15px;
+        line-height: 1.6;
+        transition: all 0.3s ease;
+    }
+    .recommendation-moderate:hover {
+        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.25);
+        transform: translateX(5px);
+    }
+    .recommendation-low {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        padding: 16px;
+        margin: 12px 0;
+        border-radius: 10px;
+        border-left: 6px solid #27ae60;
+        box-shadow: 0 2px 8px rgba(39, 174, 96, 0.15);
+        font-size: 15px;
+        line-height: 1.6;
+        transition: all 0.3s ease;
+    }
+    .recommendation-low:hover {
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+        transform: translateX(5px);
+    }
+    .risk-factors-box {
+        background-color: #fef5e7;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 20px 0;
+        border: 2px solid #f39c12;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .risk-factor-item {
+        padding: 10px 0;
+        font-size: 15px;
+        color: #2c3e50;
+        border-bottom: 1px solid rgba(243, 156, 18, 0.3);
+    }
+    .risk-factor-item:last-child {
+        border-bottom: none;
+    }
+    .section-header {
+        font-size: 20px !important;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #3498db;
+    }
+    .disclaimer-box {
+        background-color: #fff3cd;
+        border: 2px solid #ffc107;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        font-size: 14px;
+        color: #856404;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -86,7 +195,7 @@ st.markdown("<div class='subtitle'>Masukkan data pasien untuk memprediksi risiko
 
 # INPUT FORM
 with st.form("diabetes_form"):
-    st.write("### Patient Information")
+    st.write("### 👤 Patient Information")
 
     col1, col2 = st.columns(2)
 
@@ -109,7 +218,7 @@ with st.form("diabetes_form"):
         cardiovascular_disease = st.selectbox("Cardiovascular Disease", options=["No", "Yes"])
         stroke = st.selectbox("Stroke", options=["No", "Yes"])
 
-    submitted = st.form_submit_button("🔍 Predict Diabetes Risk")
+    submitted = st.form_submit_button("🔍 Predict Diabetes Risk", use_container_width=True)
 
 # PREDICTION
 if submitted:
@@ -144,7 +253,7 @@ if submitted:
     prob = model.predict_proba(features)[0][1]  # Probability of having diabetes (class 1)
 
     st.write("---")
-    st.write("### 📊 Prediction Results")
+    st.markdown("<div class='section-header'>📊 Prediction Results</div>", unsafe_allow_html=True)
 
     # Determine risk level based on probability
     if prob < 0.3:
@@ -152,16 +261,19 @@ if submitted:
         risk_color = "low-risk"
         risk_fill_class = "risk-fill-low"
         risk_percentage = prob * 100
+        rec_class = "low"
     elif prob < 0.6:
         risk_level = "🟡 Moderate Risk"
         risk_color = "moderate-risk"
         risk_fill_class = "risk-fill-moderate"
         risk_percentage = prob * 100
+        rec_class = "moderate"
     else:
         risk_level = "🔴 High Risk"
         risk_color = "high-risk"
         risk_fill_class = "risk-fill-high"
         risk_percentage = prob * 100
+        rec_class = "high"
 
     # Display risk level
     st.markdown(
@@ -179,41 +291,43 @@ if submitted:
     st.markdown(
         f"""
         <div class='risk-meter'>
-            <div class='{risk_fill_class}' style='width: {min(risk_percentage, 100)}%;'></div>
+            <div class='{risk_fill_class}' style='width: {min(risk_percentage, 100)}%;'>{prob:.1%}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
     # Display risk factors
-    st.write("### ⚠️ Risk Factors Identified:")
+    st.markdown("<div class='section-header'>⚠️ Risk Factors Identified</div>", unsafe_allow_html=True)
     risk_factors = []
     
     if glucose > 126:
-        risk_factors.append(f"• High Glucose Level: {glucose} mg/dL (Normal: < 100 mg/dL)")
+        risk_factors.append(f"🩹 High Glucose Level: {glucose} mg/dL (Normal: < 100 mg/dL)")
     if bmi >= 30:
-        risk_factors.append(f"• Obesity: BMI {bmi:.2f} (Normal: < 25)")
+        risk_factors.append(f"⚖️ Obesity: BMI {bmi:.2f} (Normal: < 25)")
     if age >= 45:
-        risk_factors.append(f"• Age: {age} years (45+ is higher risk)")
+        risk_factors.append(f"📅 Age: {age} years (45+ is higher risk)")
     if systolic_bp > 140 or diastolic_bp > 90:
-        risk_factors.append(f"• High Blood Pressure: {systolic_bp}/{diastolic_bp} mmHg (Normal: < 120/80)")
+        risk_factors.append(f"❤️ High Blood Pressure: {systolic_bp}/{diastolic_bp} mmHg (Normal: < 120/80)")
     if family_diabetes == "Yes":
-        risk_factors.append("• Family History of Diabetes")
+        risk_factors.append("👨‍👩‍👧 Family History of Diabetes")
     if hypertensive == "Yes":
-        risk_factors.append("• Hypertension Diagnosis")
+        risk_factors.append("💊 Hypertension Diagnosis")
     if cardiovascular_disease == "Yes":
-        risk_factors.append("• Cardiovascular Disease")
+        risk_factors.append("❤️‍🔥 Cardiovascular Disease")
     if stroke == "Yes":
-        risk_factors.append("• Previous Stroke")
+        risk_factors.append("🧠 Previous Stroke")
 
     if risk_factors:
+        st.markdown("<div class='risk-factors-box'>", unsafe_allow_html=True)
         for factor in risk_factors:
-            st.write(factor)
+            st.markdown(f"<div class='risk-factor-item'>{factor}</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
     else:
-        st.write("✅ No major risk factors identified")
+        st.success("✅ No major risk factors identified")
 
     # Provide recommendations
-    st.write("### 💡 Recommendations:")
+    st.markdown("<div class='section-header'>💡 Personalized Recommendations</div>", unsafe_allow_html=True)
     
     if prob >= 0.6:
         recommendations = [
@@ -231,7 +345,7 @@ if submitted:
             "🏃 Increase physical activity to at least 30 minutes daily",
             "🥗 Reduce sugar and refined carbohydrate intake",
             "⚖️ Maintain a healthy weight",
-            "👨‍⚕️ Monitor blood glucose levels regularly"
+            "📊 Monitor blood glucose levels regularly"
         ]
     else:
         recommendations = [
@@ -243,18 +357,21 @@ if submitted:
             "🚫 Avoid smoking and limit alcohol consumption"
         ]
 
+    st.markdown("<div class='recommendations-container'>", unsafe_allow_html=True)
     for i, rec in enumerate(recommendations, 1):
         st.markdown(
-            f"""
-            <div class='recommendation'>
-                {rec}
-            </div>
-            """,
+            f"<div class='recommendation-{rec_class}'>✓ {rec}</div>",
             unsafe_allow_html=True,
         )
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Disclaimer
-    st.info(
-        "⚠️ **Disclaimer**: This prediction is for informational purposes only and should not be considered as a medical diagnosis. "
-        "Please consult with a qualified healthcare professional for accurate diagnosis and treatment recommendations."
+    st.markdown(
+        """
+        <div class='disclaimer-box'>
+            <strong>⚠️ Disclaimer:</strong> This prediction is for informational purposes only and should not be considered as a medical diagnosis. 
+            Please consult with a qualified healthcare professional for accurate diagnosis and treatment recommendations.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
