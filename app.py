@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
+import os
 
 # Page configuration
 st.set_page_config(
@@ -70,9 +71,11 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     try:
-        return pickle.load(open("model.pkl", "rb"))
+        # Get the directory where app.py is located
+        model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
+        return pickle.load(open(model_path, "rb"))
     except FileNotFoundError:
-        st.error("Model file not found. Please ensure 'model.pkl' exists.")
+        st.error("Model file not found. Please ensure 'model.pkl' exists in the app directory.")
         return None
 
 model = load_model()
